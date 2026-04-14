@@ -1,0 +1,656 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>Para Luana</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Lato:wght@300;400&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --blue-deep:    #1a2f5e;
+      --blue-mid:     #2a4a8a;
+      --blue-soft:    #4a7cc7;
+      --blue-pale:    #c8d9f5;
+      --blue-mist:    #e8f0fb;
+      --gold:         #d4a853;
+      --gold-light:   #f0d080;
+      --rose:         #c97b84;
+      --cream:        #faf7f2;
+      --text-dark:    #1a1a2e;
+      --text-mid:     #3a3a5c;
+      --text-muted:   #7a7a9a;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html, body {
+      height: 100%;
+      overflow: hidden;
+      background: var(--blue-deep);
+      font-family: 'Lato', sans-serif;
+      color: var(--cream);
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    /* ── BACKGROUND ── */
+    .bg {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      overflow: hidden;
+    }
+
+    .bg-gradient {
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 80% 60% at 20% 10%, #2a4a8a55 0%, transparent 60%),
+        radial-gradient(ellipse 60% 80% at 80% 90%, #1a2f5e88 0%, transparent 55%),
+        radial-gradient(ellipse 100% 100% at 50% 50%, #0f1e3f 0%, #0a1628 100%);
+    }
+
+    .stars {
+      position: absolute;
+      inset: 0;
+    }
+
+    .star {
+      position: absolute;
+      border-radius: 50%;
+      background: white;
+      animation: twinkle var(--dur, 3s) ease-in-out infinite var(--delay, 0s);
+    }
+
+    @keyframes twinkle {
+      0%, 100% { opacity: var(--min-op, 0.1); transform: scale(1); }
+      50%       { opacity: var(--max-op, 0.6); transform: scale(1.3); }
+    }
+
+    .orb {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(60px);
+      animation: drift 12s ease-in-out infinite;
+    }
+    .orb-1 {
+      width: 300px; height: 300px;
+      background: #2a4a8a33;
+      top: -80px; left: -60px;
+      animation-duration: 15s;
+    }
+    .orb-2 {
+      width: 250px; height: 250px;
+      background: #d4a85322;
+      bottom: -60px; right: -40px;
+      animation-duration: 18s;
+      animation-delay: -6s;
+    }
+    .orb-3 {
+      width: 200px; height: 200px;
+      background: #c97b8422;
+      top: 40%; left: 60%;
+      animation-duration: 20s;
+      animation-delay: -10s;
+    }
+    @keyframes drift {
+      0%, 100% { transform: translate(0, 0) scale(1); }
+      33%       { transform: translate(20px, -30px) scale(1.1); }
+      66%       { transform: translate(-15px, 20px) scale(0.95); }
+    }
+
+    /* ── INTRO SCREEN ── */
+    #intro {
+      position: fixed;
+      inset: 0;
+      z-index: 100;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 2rem;
+      padding: 2rem;
+      text-align: center;
+      transition: opacity 0.8s ease, visibility 0.8s;
+    }
+    #intro.hidden {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+    }
+
+    .intro-to {
+      font-family: 'Lato', sans-serif;
+      font-weight: 300;
+      font-size: 13px;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--blue-pale);
+      opacity: 0.7;
+    }
+
+    .intro-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 300;
+      font-size: clamp(56px, 18vw, 82px);
+      line-height: 1;
+      color: var(--cream);
+      text-shadow: 0 0 60px #4a7cc755;
+      letter-spacing: -0.01em;
+    }
+
+    .intro-line {
+      width: 40px;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--gold), transparent);
+    }
+
+    .intro-sub {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-size: 18px;
+      color: var(--blue-pale);
+      opacity: 0.8;
+    }
+
+    .intro-btn {
+      margin-top: 1.5rem;
+      padding: 14px 36px;
+      border: 1px solid #4a7cc755;
+      border-radius: 40px;
+      background: linear-gradient(135deg, #2a4a8a33, #1a2f5e66);
+      color: var(--cream);
+      font-family: 'Lato', sans-serif;
+      font-weight: 300;
+      font-size: 14px;
+      letter-spacing: 0.15em;
+      cursor: pointer;
+      backdrop-filter: blur(10px);
+      transition: all 0.3s ease;
+      -webkit-backdrop-filter: blur(10px);
+    }
+    .intro-btn:active {
+      transform: scale(0.97);
+      background: linear-gradient(135deg, #2a4a8a55, #1a2f5e88);
+    }
+
+    /* ── READER ── */
+    #reader {
+      position: fixed;
+      inset: 0;
+      z-index: 10;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
+      padding: env(safe-area-inset-top, 20px) 0 env(safe-area-inset-bottom, 20px);
+    }
+
+    /* top bar */
+    .top-bar {
+      width: 100%;
+      padding: 20px 28px 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      opacity: 0;
+      transition: opacity 0.6s ease;
+    }
+    .top-bar.visible { opacity: 1; }
+
+    .top-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 300;
+      font-size: 20px;
+      color: var(--blue-pale);
+      letter-spacing: 0.05em;
+    }
+
+    .progress-wrap {
+      display: flex;
+      gap: 3px;
+      align-items: center;
+    }
+    .progress-dot {
+      width: 4px; height: 4px;
+      border-radius: 50%;
+      background: #ffffff22;
+      transition: all 0.4s ease;
+    }
+    .progress-dot.done    { background: #ffffff44; width: 4px; }
+    .progress-dot.active  { background: var(--gold); width: 12px; border-radius: 3px; }
+
+    /* phrase area */
+    .phrase-area {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 20px 32px;
+      width: 100%;
+      max-width: 480px;
+      cursor: pointer;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .lang-badge {
+      font-size: 10px;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--gold);
+      opacity: 0;
+      margin-bottom: 20px;
+      transition: opacity 0.6s ease;
+      font-weight: 400;
+    }
+    .lang-badge.visible { opacity: 0.8; }
+
+    .phrase-text {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(22px, 6vw, 28px);
+      font-weight: 300;
+      line-height: 1.7;
+      text-align: center;
+      color: var(--cream);
+      opacity: 0;
+      transform: translateY(12px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+      text-shadow: 0 0 40px #4a7cc722;
+    }
+    .phrase-text.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* decorative quote marks */
+    .phrase-text::before {
+      content: '\201C';
+      font-size: 80px;
+      line-height: 0;
+      vertical-align: -0.35em;
+      color: var(--gold);
+      opacity: 0.25;
+      margin-right: 4px;
+      font-family: 'Cormorant Garamond', serif;
+    }
+
+    /* number */
+    .phrase-num {
+      margin-top: 36px;
+      font-size: 11px;
+      letter-spacing: 0.2em;
+      color: var(--blue-pale);
+      opacity: 0;
+      transition: opacity 0.6s ease 0.3s;
+    }
+    .phrase-num.visible { opacity: 0.4; }
+
+    /* bottom controls */
+    .bottom-bar {
+      width: 100%;
+      padding: 0 28px 28px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 20px;
+      opacity: 0;
+      transition: opacity 0.6s ease;
+    }
+    .bottom-bar.visible { opacity: 1; }
+
+    .tap-hint {
+      font-size: 11px;
+      letter-spacing: 0.2em;
+      color: var(--blue-pale);
+      opacity: 0.4;
+      text-transform: uppercase;
+      animation: breathe 2.5s ease-in-out infinite;
+    }
+    @keyframes breathe {
+      0%, 100% { opacity: 0.2; }
+      50%       { opacity: 0.55; }
+    }
+
+    .nav-row {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+    }
+
+    .nav-btn {
+      width: 48px; height: 48px;
+      border-radius: 50%;
+      border: 1px solid #4a7cc744;
+      background: #ffffff08;
+      color: var(--blue-pale);
+      font-size: 18px;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer;
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      transition: all 0.2s ease;
+    }
+    .nav-btn:active { transform: scale(0.92); background: #4a7cc722; }
+    .nav-btn:disabled { opacity: 0.2; pointer-events: none; }
+
+    .center-btn {
+      width: 64px; height: 64px;
+      border-radius: 50%;
+      border: 1px solid var(--gold-light);
+      background: linear-gradient(135deg, #2a4a8a44, #1a2f5e88);
+      color: var(--cream);
+      font-size: 22px;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer;
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      box-shadow: 0 0 30px #d4a85322;
+      transition: all 0.2s ease;
+    }
+    .center-btn:active { transform: scale(0.92); box-shadow: 0 0 50px #d4a85344; }
+
+    /* ── FINAL SCREEN ── */
+    #finale {
+      position: fixed;
+      inset: 0;
+      z-index: 50;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 1.5rem;
+      padding: 3rem 2.5rem;
+      text-align: center;
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+      transition: opacity 1s ease, visibility 1s;
+    }
+    #finale.visible {
+      opacity: 1;
+      visibility: visible;
+      pointer-events: auto;
+    }
+
+    .finale-symbol {
+      font-size: 48px;
+      animation: floatHeart 3s ease-in-out infinite;
+      filter: drop-shadow(0 0 20px #d4a85366);
+    }
+    @keyframes floatHeart {
+      0%, 100% { transform: translateY(0) scale(1); }
+      50%       { transform: translateY(-8px) scale(1.05); }
+    }
+
+    .finale-text {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-size: clamp(22px, 6vw, 28px);
+      font-weight: 300;
+      line-height: 1.7;
+      color: var(--cream);
+    }
+
+    .finale-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 300;
+      font-size: 42px;
+      color: var(--gold-light);
+      text-shadow: 0 0 40px #d4a85344;
+      letter-spacing: 0.05em;
+    }
+
+    .finale-restart {
+      margin-top: 1rem;
+      padding: 12px 32px;
+      border: 1px solid #4a7cc755;
+      border-radius: 40px;
+      background: transparent;
+      color: var(--blue-pale);
+      font-family: 'Lato', sans-serif;
+      font-size: 12px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    .finale-restart:active { background: #4a7cc722; }
+
+    /* floating particles */
+    .particle {
+      position: fixed;
+      pointer-events: none;
+      z-index: 5;
+      border-radius: 50%;
+      animation: floatUp var(--dur) ease-out forwards;
+    }
+    @keyframes floatUp {
+      0%   { transform: translateY(0) scale(1); opacity: 0.7; }
+      100% { transform: translateY(-200px) scale(0); opacity: 0; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Background -->
+<div class="bg">
+  <div class="bg-gradient"></div>
+  <div class="stars" id="stars"></div>
+  <div class="orb orb-1"></div>
+  <div class="orb orb-2"></div>
+  <div class="orb orb-3"></div>
+</div>
+
+<!-- Intro -->
+<div id="intro">
+  <div class="intro-to">para</div>
+  <div class="intro-name">Luana</div>
+  <div class="intro-line"></div>
+  <div class="intro-sub">hay algo que necesito decirte</div>
+  <button class="intro-btn" onclick="startReading()">Leer ✦</button>
+</div>
+
+<!-- Reader -->
+<div id="reader">
+  <div class="top-bar" id="topBar">
+    <div class="top-name">Luana</div>
+    <div class="progress-wrap" id="progressDots"></div>
+  </div>
+
+  <div class="phrase-area" id="phraseArea" onclick="nextPhrase()">
+    <div class="lang-badge" id="langBadge">español</div>
+    <div class="phrase-text" id="phraseText"></div>
+    <div class="phrase-num" id="phraseNum"></div>
+  </div>
+
+  <div class="bottom-bar" id="bottomBar">
+    <div class="tap-hint" id="tapHint">toca para continuar</div>
+    <div class="nav-row">
+      <button class="nav-btn" id="prevBtn" onclick="prevPhrase()" disabled>‹</button>
+      <button class="center-btn" onclick="nextPhrase()">›</button>
+      <button class="nav-btn" style="opacity:0;pointer-events:none">›</button>
+    </div>
+  </div>
+</div>
+
+<!-- Finale -->
+<div id="finale">
+  <div class="finale-symbol">✦</div>
+  <div class="finale-text">no puedo escapar de ti.</div>
+  <div class="finale-name">Luana</div>
+  <div class="finale-text" style="font-size:18px; opacity:0.7;">ni quiero intentarlo.</div>
+  <button class="finale-restart" onclick="restart()">leer de nuevo</button>
+</div>
+
+<script>
+const phrases = [
+  { text: "Do you love me the same way I love you?", lang: null },
+  { text: "Every time I look at a picture of you I feel like I can fly, as if I could conquer the world. You give me superpowers.", lang: null },
+  { text: "When was it that I started feeling this way? What went wrong with me to show you this side of me? Can I learn to love you?", lang: null },
+  { text: "If I look at the future, will you be there? Why is it I didn't meet you later in our lives? I don't want to drag you into something we aren't prepared for, but I feel an emptiness in my heart every time I think of us.", lang: null },
+  { text: "Why is it that I love you this much? What have you done to me?", lang: null },
+  { text: "If I showed you my true self, would you stay? Aren't these feelings just temporary? Why even try?", lang: null },
+  { text: "I torment myself by thinking of us — what can't be us, and what could be us. It feels like a torture I need to endure.", lang: null },
+  { text: "Luana, you've cursed me. You've put shackles in my heart — but I don't mind to be a slave of love. At the end of the day, one is nothing else but a slave of its own desires.", lang: null },
+  { text: "Do you miss me? Do you look at your phone and think of me? Do you go on walks and remember that day? I'd give anything to be with you.", lang: null },
+  { text: "Please tell me something. I feel like a flower waiting for its bee — come and feed me of your sweet love.", lang: null },
+  { text: "¿Cuándo será mi pasión saciada? ¿Mis deseos reprimidos concebidos? ¿Mis fantasías cumplidas? ¿Alguna vez me viste con ojos impuros?", lang: "es" },
+  { text: "I wonder if you'll read this one day. Will we laugh at this and think of how stupid we were? Will we look back with a bittersweet feeling while in the arms of someone else? Please, god, don't let it be.", lang: null },
+  { text: "Me hubiera gustado besar tus labios, jugar con ellos y morderlos. Me es más preferido una muestra de absoluto odio que una cucharada de indiferencia.", lang: "es" },
+  { text: "I've listened to your voice on repeat. It feels like a sweet lick of an angel — but once it ends I feel miserable of not having you with me. You should be beside me.", lang: null },
+  { text: "¿Cuántas preguntas no pregunté, cuántas acciones no te mostré, cuántas miradas no te tiré? Me revuelve el estómago pensar en una vida sin ti.", lang: "es" },
+  { text: "I don't want another man to touch your face, kiss your beautiful lips, touch your saint body. You're a land for me to discover, not a place to be exploited.", lang: null },
+  { text: "I've restrained my thoughts, stopped my tongue from saying truths, prohibited my eyes from getting lost in you.", lang: null },
+  { text: "How can you be so hot? How can you be so dumb? How can you be so intelligent? How can you be you?", lang: null },
+  { text: "Would you like to come with me on a trip? Forget about the worries of this noisy world and create ours instead?", lang: null },
+  { text: "Please forgive me — forgive me and clean my consciousness of the stupidity I committed in front of you.", lang: null },
+  { text: "Estoy cansado de pensar en ti. No puedo desviar mi mirada de tu rostro, mis oídos de tu voz, mis brazos de tu cuerpo, mi mente de ti. No puedo escapar de ti.", lang: "es" },
+];
+
+let current = -1;
+let transitioning = false;
+
+// Stars
+const starsEl = document.getElementById('stars');
+for (let i = 0; i < 80; i++) {
+  const s = document.createElement('div');
+  s.className = 'star';
+  const size = Math.random() * 2 + 0.5;
+  s.style.cssText = `
+    width:${size}px; height:${size}px;
+    top:${Math.random()*100}%; left:${Math.random()*100}%;
+    --dur:${2+Math.random()*4}s;
+    --delay:-${Math.random()*5}s;
+    --min-op:${0.05+Math.random()*0.1};
+    --max-op:${0.3+Math.random()*0.5};
+  `;
+  starsEl.appendChild(s);
+}
+
+// Progress dots
+const dotsWrap = document.getElementById('progressDots');
+phrases.forEach((_, i) => {
+  const d = document.createElement('div');
+  d.className = 'progress-dot';
+  dotsWrap.appendChild(d);
+});
+
+function updateDots() {
+  document.querySelectorAll('.progress-dot').forEach((d, i) => {
+    d.className = 'progress-dot' + (i < current ? ' done' : i === current ? ' active' : '');
+  });
+}
+
+function startReading() {
+  document.getElementById('intro').classList.add('hidden');
+  document.getElementById('topBar').classList.add('visible');
+  document.getElementById('bottomBar').classList.add('visible');
+  current = 0;
+  showPhrase(0);
+}
+
+function showPhrase(index) {
+  if (transitioning) return;
+  transitioning = true;
+
+  const textEl   = document.getElementById('phraseText');
+  const numEl    = document.getElementById('phraseNum');
+  const langEl   = document.getElementById('langBadge');
+  const prevBtn  = document.getElementById('prevBtn');
+
+  textEl.classList.remove('visible');
+  numEl.classList.remove('visible');
+  langEl.classList.remove('visible');
+
+  setTimeout(() => {
+    const p = phrases[index];
+    textEl.textContent = p.text;
+    numEl.textContent = (index + 1) + ' / ' + phrases.length;
+    langEl.textContent = p.lang === 'es' ? 'español' : '';
+
+    updateDots();
+    prevBtn.disabled = index === 0;
+
+    textEl.classList.add('visible');
+    numEl.classList.add('visible');
+    if (p.lang) langEl.classList.add('visible');
+
+    transitioning = false;
+  }, 450);
+}
+
+function nextPhrase() {
+  if (transitioning) return;
+  if (current < phrases.length - 1) {
+    current++;
+    showPhrase(current);
+    spawnParticle();
+    if (current > 0) {
+      document.getElementById('tapHint').style.opacity = '0';
+    }
+  } else {
+    showFinale();
+  }
+}
+
+function prevPhrase() {
+  if (transitioning || current <= 0) return;
+  current--;
+  showPhrase(current);
+}
+
+function showFinale() {
+  document.getElementById('finale').classList.add('visible');
+  document.getElementById('reader').style.opacity = '0';
+  spawnParticles();
+}
+
+function restart() {
+  document.getElementById('finale').classList.remove('visible');
+  document.getElementById('reader').style.opacity = '1';
+  document.getElementById('tapHint').style.opacity = '1';
+  current = 0;
+  showPhrase(0);
+}
+
+function spawnParticle() {
+  const colors = ['#d4a853', '#4a7cc7', '#c97b84', '#c8d9f5'];
+  const p = document.createElement('div');
+  p.className = 'particle';
+  const size = 4 + Math.random() * 6;
+  const x = 30 + Math.random() * 40;
+  const y = 60 + Math.random() * 30;
+  p.style.cssText = `
+    width:${size}px; height:${size}px;
+    left:${x}%; top:${y}%;
+    background:${colors[Math.floor(Math.random()*colors.length)]};
+    --dur:${1.2+Math.random()*0.8}s;
+    opacity:0.5;
+  `;
+  document.body.appendChild(p);
+  setTimeout(() => p.remove(), 2000);
+}
+
+function spawnParticles() {
+  for (let i = 0; i < 12; i++) {
+    setTimeout(spawnParticle, i * 100);
+  }
+}
+
+// swipe support
+let touchStartY = 0;
+document.getElementById('phraseArea').addEventListener('touchstart', e => {
+  touchStartY = e.touches[0].clientY;
+}, { passive: true });
+document.getElementById('phraseArea').addEventListener('touchend', e => {
+  const dy = touchStartY - e.changedTouches[0].clientY;
+  if (Math.abs(dy) > 40) {
+    if (dy > 0) nextPhrase();
+    else prevPhrase();
+  }
+}, { passive: true });
+</script>
+</body>
+</html>
